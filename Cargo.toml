@@ -1,0 +1,12 @@
+[package]
+name = "axum-lab"
+version = "0.0.1"
+edition = "2021"
+authors = ["Eric Le Goff <elegoff@pm.me>"]
+
+[dependencies]
+tokio = { version ="1", features = ["full"]}
+axum = "0.6"
+
+[dev-dependencies]
+anyhow = "1"
