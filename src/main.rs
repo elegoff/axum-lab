@@ -3,7 +3,7 @@
 use axum::response::Html;
 use axum::routing::get;
 use axum::Router;
-use std::net::SocketAddr;
+use tokio::net::TcpListener;
 
 #[tokio::main]
 async fn main() {
@@ -13,11 +13,10 @@ async fn main() {
     );
 
     // Server
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
-    println!("->> LITENING on {addr}\n");
+    let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap();
+    println!("->> LITENING on {:?}\n", listener.local_addr());
 
-    axum::Server::bind(&addr)
-        .serve(routes_hello.into_make_service())
+    axum::serve(listener, routes_hello.into_make_service())
         .await
         .unwrap();
 }

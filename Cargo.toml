@@ -6,7 +6,8 @@ authors = ["Eric Le Goff <elegoff@pm.me>"]
 
 [dependencies]
 tokio = { version ="1", features = ["full"]}
-axum = "0.6"
+axum = "0.7"
 
 [dev-dependencies]
 anyhow = "1"
+httpc-test = "0.1"
