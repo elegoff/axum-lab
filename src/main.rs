@@ -1,5 +1,7 @@
 #![allow(unused)] //just for beginning
 
+pub use self::error::{Error, Result};
+
 use axum::extract::Path;
 use axum::extract::Query;
 use axum::response::Html;
@@ -9,6 +11,8 @@ use axum::Router;
 use serde::Deserialize;
 use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
+
+mod error;
 
 #[tokio::main]
 async fn main() {
