@@ -6,10 +6,13 @@ authors = ["Eric Le Goff <elegoff@pm.me>"]
 
 [dependencies]
 tokio = { version ="1", features = ["full"]}
+
+# Serde
 serde = { version ="1", features = ["derive"]}
 serde_json = "1"
 # Axum
 axum = "0.7"
+tower-http = {version ="0.5", features = ["fs"]}
 
 [dev-dependencies]
 anyhow = "1"

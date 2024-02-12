@@ -4,14 +4,15 @@ use axum::extract::Path;
 use axum::extract::Query;
 use axum::response::Html;
 use axum::response::IntoResponse;
-use axum::routing::get;
+use axum::routing::{get, get_service};
 use axum::Router;
 use serde::Deserialize;
 use tokio::net::TcpListener;
+use tower_http::services::ServeDir;
 
 #[tokio::main]
 async fn main() {
-    let routes_all = Router::new().merge(routes_hello());
+    let routes_all = Router::new().merge(routes_hello().fallback_service(routes_static()));
 
     // Server
     let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap();
@@ -22,6 +23,9 @@ async fn main() {
         .unwrap();
 }
 
+fn routes_static() -> Router {
+    Router::new().nest_service("/", get_service(ServeDir::new("./")))
+}
 // Routes hello
 //
 fn routes_hello() -> Router {
