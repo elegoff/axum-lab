@@ -8,8 +8,8 @@ async fn quick_dev() -> Result<()> {
     let base_url = "http://localhost:8080";
 
     let hc = httpc_test::new_client(base_url)?;
-    hc.do_get("/hello2/Vincent").await?.print().await?;
 
+    hc.do_get("/hello2/Vincent").await?.print().await?;
     let req_login = hc.do_post(
         "/api/login",
         json!({
@@ -19,6 +19,8 @@ async fn quick_dev() -> Result<()> {
     );
 
     req_login.await?.print().await?;
+    //second get should have cookie set after login
+    hc.do_get("/hello2/Vincent").await?.print().await?;
 
     Ok(())
 }
