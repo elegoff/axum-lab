@@ -20,7 +20,6 @@ async fn quick_dev() -> Result<()> {
 
     req_login.await?.print().await?;
     //second get should have cookie set after login
-    hc.do_get("/hello2/Vincent").await?.print().await?;
 
     Ok(())
 }
