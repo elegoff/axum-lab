@@ -19,7 +19,6 @@ async fn quick_dev() -> Result<()> {
     );
 
     req_login.await?.print().await?;
-    //second get should have cookie set after login
 
     Ok(())
 }

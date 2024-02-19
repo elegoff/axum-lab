@@ -21,7 +21,7 @@ pub struct TicketForCreate {
 //
 #[derive(Clone)]
 pub struct ModelController {
-    tickets_store: Arc<Mutex<Vector<Option<Ticket>>>>,
+    tickets_store: Arc<Mutex<Vec<Option<Ticket>>>>,
 }
 
 impl ModelController {
@@ -52,11 +52,11 @@ impl ModelController {
         Ok(tickets)
     }
 
-    pub async fn delete_ticket(&self, id: u64) -> Result<Ticket> {}
+    pub async fn delete_ticket(&self, id: u64) -> Result<Ticket> {
         let mut store = self.tickets_store.lock().unwrap();
 
-        let ticket = store.get_mut(id as usize)
-        .and_then(|t| t.take());
-        
-        ticket.ok_or(Error::TicketDeleteFailIdNotFound{id})
+        let ticket = store.get_mut(id as usize).and_then(|t| t.take());
+
+        ticket.ok_or(Error::TicketDeleteFailIdNotFound { id })
+    }
 }
