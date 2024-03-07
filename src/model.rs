@@ -1,12 +1,13 @@
+use crate::ctx::Ctx;
 use crate::{Error, Result};
 use serde::{Deserialize, Serialize};
-
 use std::sync::{Arc, Mutex};
 
 // Ticket typees
 #[derive(Clone, Debug, Serialize)]
 pub struct Ticket {
     pub id: u64,
+    pub creator_id: u64,
     pub title: String,
 }
 
@@ -31,12 +32,14 @@ impl ModelController {
         })
     }
 
-    pub async fn create_ticket(&self, ticket_fc: TicketForCreate) -> Result<Ticket> {
+    pub async fn create_ticket(&self, ctx: Ctx, ticket_fc: TicketForCreate) -> Result<Ticket> {
         //next id
         let mut store = self.tickets_store.lock().unwrap();
         let id = store.len() as u64;
+        let creator_id = ctx.user_id();
         let ticket = Ticket {
             id,
+            creator_id,
             title: ticket_fc.title,
         };
 
@@ -44,7 +47,7 @@ impl ModelController {
         Ok(ticket)
     }
 
-    pub async fn list_tickets(&self) -> Result<Vec<Ticket>> {
+    pub async fn list_tickets(&self, ctx: Ctx) -> Result<Vec<Ticket>> {
         let store = self.tickets_store.lock().unwrap();
 
         //filter_mao allows exlusion of None(s)
@@ -52,7 +55,7 @@ impl ModelController {
         Ok(tickets)
     }
 
-    pub async fn delete_ticket(&self, id: u64) -> Result<Ticket> {
+    pub async fn delete_ticket(&self, ctx: Ctx, id: u64) -> Result<Ticket> {
         let mut store = self.tickets_store.lock().unwrap();
 
         let ticket = store.get_mut(id as usize).and_then(|t| t.take());
