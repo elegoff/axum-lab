@@ -5,12 +5,13 @@ use axum::{
 
 pub type Result<T> = core::result::Result<T, Error>;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Error {
     LoginFail,
     // Auth errors
     AuthFailNoAuthTokenCookie,
     AuthFailTokenWrongFormat,
+    AuthFailCtxNotInRequestExt,
     //Model errors
     TicketDeleteFailIdNotFound { id: u64 },
 }

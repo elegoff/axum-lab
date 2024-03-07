@@ -15,6 +15,7 @@ use tokio::net::TcpListener;
 use tower_cookies::CookieManagerLayer;
 use tower_http::services::ServeDir;
 
+mod ctx;
 mod error;
 mod model;
 mod web;
@@ -38,7 +39,7 @@ async fn main() -> Result<()> {
 
     // Server
     let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap();
-    println!("->> LITENING on {:?}\n", listener.local_addr());
+    println!("->> LISTENING on {:?}\n", listener.local_addr());
 
     axum::serve(listener, routes_all.into_make_service())
         .await
